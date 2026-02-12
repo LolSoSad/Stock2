@@ -224,18 +224,82 @@ h3{
 .card-muted .form-check-input{
     accent-color: #cbd5e1;        /* สี checkbox จาง */
 }
+/* ===== Search Button ===== */
+.btn-search{
+  background: linear-gradient(135deg,#3b82f6,#2563eb);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 10px 18px;
+  transition: .3s;
+}
+
+.btn-search:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37,99,235,.4);
+}
+
+/* ===== Reset Button ===== */
+.btn-reset{
+  background: linear-gradient(135deg,#ef4444,#dc2626);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 10px 18px;
+  transition: .3s;
+}
+
+.btn-reset:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(220,38,38,.4);
+}
+
   </style>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <div class="container py-4">
   <h3 class="mb-4">📦 รายการนำเข้าสินค้า</h3>
-<div class="row mb-3">
-  <div class="col-md-4 col-12">
-    <input type="text" id="searchInput" 
-           class="form-control" 
-           placeholder="🔍 ค้นหา ">
+<!-- 🔎 Filter Section -->
+<div class="card shadow-sm mb-4 border-0">
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+
+      <div class="col-md-2 col-12">
+        <label class="form-label fw-semibold">วันที่เริ่มต้นสัญญา / วันเริ่มรอบบิล</label>
+        <input type="date" class="form-control" id="startDate">
+      </div>
+
+      <div class="col-md-2 col-12">
+        <label class="form-label fw-semibold">วันสิ้นสุดสัญญา</label>
+        <input type="date" class="form-control" id="endDate">
+      </div>
+
+      <div class="col-md-2 col-12">
+        <label class="form-label fw-semibold">เลขที่สัญญา</label>
+        <select class="form-select" id="contractNo">
+          <option value="">ทั้งหมด</option>
+          <option value="C001">C001</option>
+          <option value="C002">C002</option>
+          <option value="C003">C003</option>
+        </select>
+      </div>
+<div class="col-md-2 col-12 d-flex gap-2">
+    <button class="btn btn-search w-60" onclick="filterTable()">
+        🔍 ค้นหา
+    </button>
+
+    <button class="btn btn-reset w-60" onclick="resetFilter()">
+        ↻ รีเซ็ต
+    </button>
+</div>
+
+    </div>
   </div>
 </div>
+
 
   <div class="card shadow-sm border-0">
     <div class="card-body">
@@ -364,7 +428,7 @@ h3{
 </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" id="btnReject">ปฏิเสธ</button>
-        <button class="btn btn-success">บันทึก</button>
+        <button class="btn btn-success" id="saveBtn">บันทึก</button>
       </div>
     </div>
   </div>
@@ -402,6 +466,19 @@ h3{
     border-radius: 15px !important;
     font-family: 'Prompt', sans-serif !important;
 }
+.form-control,
+.form-select{
+  border-radius:12px;
+  border:1px solid #e2e8f0;
+  padding:10px;
+}
+
+.form-control:focus,
+.form-select:focus{
+  border-color:#38bdf8;
+  box-shadow:0 0 0 3px rgba(56,189,248,.2);
+}
+
 </style>
 
 <script>
@@ -471,22 +548,62 @@ document.getElementById('btnReject').addEventListener('click', function() {
 });
 </script> 
 <script>
-document.getElementById("searchInput").addEventListener("keyup", function() {
+const searchInput = document.getElementById("searchInput");
 
-  const keyword = this.value.toLowerCase();
-  const rows = document.querySelectorAll("tbody tr");
+if (searchInput) {
+  searchInput.addEventListener("keyup", function() {
+    const keyword = this.value.toLowerCase();
+    const rows = document.querySelectorAll("tbody tr");
 
-  rows.forEach(row => {
-    const text = row.innerText.toLowerCase();
-
-    if (text.includes(keyword)) {
-      row.style.display = "";
-    } else {
-      row.style.display = "none";
-    }
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(keyword) ? "" : "none";
+    });
   });
+}
+function filterTable() {
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+  const contractNo = document.getElementById("contractNo").value;
 
+  console.log("Start:", startDate);
+  console.log("End:", endDate);
+  console.log("Contract:", contractNo);
+
+  Swal.fire({
+    icon: 'info',
+    title: 'กำลังค้นหา...',
+    text: 'ระบบกำลังกรองข้อมูลตามเงื่อนไข',
+    timer: 1500,
+    showConfirmButton: false
+  });
+}
+
+// 🔔 Alert ตอนกดบันทึก
+document.getElementById("saveBtn").addEventListener("click", function () {
+  Swal.fire({
+    icon: 'success',
+    title: 'บันทึกสำเร็จ',
+    text: 'ข้อมูลถูกบันทึกเรียบร้อยแล้ว',
+    confirmButtonColor: '#ff7a1a'
+  });
 });
+
+</script>
+<script>
+function resetFilter() {
+    document.getElementById("startDate").value = "";
+    document.getElementById("endDate").value = "";
+    document.getElementById("contractNo").value = "";
+
+    Swal.fire({
+        icon: 'success',
+        title: 'รีเซ็ตสำเร็จ',
+        text: 'ล้างค่าการค้นหาเรียบร้อยแล้ว',
+        timer: 1200,
+        showConfirmButton: false
+    });
+}
 </script>
      
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
