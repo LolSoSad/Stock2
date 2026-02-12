@@ -191,7 +191,19 @@ h3{
   color:#475569;
   border:none;
 }
+.card-muted{
+    background: #f8fafc;          /* พื้นจางลง */
+    border: 1px solid #e5e7eb;
+    opacity: 0.6;                 /* ทำให้จางทั้งกล่อง */
+}
 
+.card-muted .form-check-label{
+    color: #9ca3af;               /* ตัวหนังสือจาง */
+}
+
+.card-muted .form-check-input{
+    accent-color: #cbd5e1;        /* สี checkbox จาง */
+}
   </style>
 </head>
 <body>
@@ -285,29 +297,29 @@ h3{
           </thead>
           <tbody>
             <tr>
-              <td>รถยก</td>
-              <td><input type="checkbox" checked></td>
+              <td>รถยก : 987654</td>
+              <td class="card-muted"><input type="checkbox" checked></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
             </tr>
             <tr>
-              <td>กล่องควบคุม</td>
-              <td><input type="checkbox" checked></td>
+              <td>กล่องควบคุม : 123456</td>
+              <td class="card-muted"><input type="checkbox" checked></td>
               <td><input type="checkbox" checked></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
             </tr>
             <tr>
-              <td>เครื่องชาร์จ</td>
-              <td><input type="checkbox"></td>
+              <td>เครื่องชาร์จ : 987654</td>
+              <td class="card-muted"><input type="checkbox" checked></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
             </tr>
             <tr>
-              <td>แบตเตอรี่</td>
-              <td><input type="checkbox"></td>
+              <td>แบตเตอรี่ : 987654</td>
+              <td class="card-muted"><input type="checkbox" checked></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
               <td><input type="checkbox"></td>
@@ -316,7 +328,7 @@ h3{
         </table>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+        <button class="btn btn-secondary" data-bs-dismiss="modal">ปฏิเสธ</button>
         <button class="btn btn-success">บันทึก</button>
       </div>
     </div>
