@@ -285,56 +285,164 @@ h3{
           </div>
         </div>
 
-        <table class="table table-bordered modal-checklist">
-          <thead>
-            <tr>
-              <th>รายการตรวจ</th>
-              <th>Admin</th>
-              <th>WH</th>
-              <th>PDI Assy</th>
-              <th>PDI QC</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>รถยก : 987654</td>
-              <td class="card-muted"><input type="checkbox" checked></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-              <td>กล่องควบคุม : 123456</td>
-              <td class="card-muted"><input type="checkbox" checked></td>
-              <td><input type="checkbox" checked></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-              <td>เครื่องชาร์จ : 987654</td>
-              <td class="card-muted"><input type="checkbox" checked></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-            </tr>
-            <tr>
-              <td>แบตเตอรี่ : 987654</td>
-              <td class="card-muted"><input type="checkbox" checked></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-              <td><input type="checkbox"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+<table class="table table-bordered modal-checklist">
+  <thead>
+    <tr>
+      <th>รายการตรวจ</th>
+      <th>Admin</th>
+      <th>WH</th>
+      <th>PDI Assy</th>
+      <th>PDI QC</th>
+    </tr>
+    <tr class="bg-light">
+      <td class="text-start fw-bold" style="font-size: 0.8rem; color: #64748b;">เลือกทั้งหมด</td>
+      <td><input type="checkbox" class="check-all" data-target="col-admin"></td>
+      <td><input type="checkbox" class="check-all card-muted" data-target="col-wh"></td>
+      <td><input type="checkbox" class="check-all card-muted" data-target="col-assy"></td>
+      <td><input type="checkbox" class="check-all card-muted" data-target="col-qc"></td>
+    </tr>
+  </thead>
+<tbody>
+  <tr>
+    <td class="text-start">รถยก : 987654</td>
+    <td><input type="checkbox" class="col-admin"></td>
+    <td class="card-muted"><input type="checkbox" class="col-wh" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-assy" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-qc" disabled></td>
+  </tr>
+  <tr>
+    <td class="text-start">กล่องควบคุม : 123456</td>
+    <td><input type="checkbox" class="col-admin"></td>
+    <td class="card-muted"><input type="checkbox" class="col-wh" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-assy" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-qc" disabled></td>
+  </tr>
+  <tr>
+    <td class="text-start">เครื่องชาร์จ : 987654</td>
+    <td><input type="checkbox" class="col-admin"></td>
+    <td class="card-muted"><input type="checkbox" class="col-wh" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-assy" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-qc" disabled></td>
+  </tr>
+  <tr>
+    <td class="text-start">แบตเตอรี่ : 987654</td>
+    <td><input type="checkbox" class="col-admin"></td>
+    <td class="card-muted"><input type="checkbox" class="col-wh" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-assy" disabled></td>
+    <td class="card-muted"><input type="checkbox" class="col-qc" disabled></td>
+  </tr>
+</tbody>
+</table>
+</div>
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">ปฏิเสธ</button>
+        <button type="button" class="btn btn-secondary" id="btnReject">ปฏิเสธ</button>
         <button class="btn btn-success">บันทึก</button>
       </div>
     </div>
   </div>
 </div>
+<style>
+  .check-all {
+    accent-color: #38bdf8 !important; /* สีฟ้าสดสำหรับปุ่มเลือกทั้งหมด */
+    transform: scale(1.1);
+  }
+  .bg-light td {
+    background-color: #f8fafc !important;
+    padding: 10px !important;
+  }
+/* ทำให้ปุ่มใน SweetAlert มนเหมือนปุ่มในหน้าเว็บ */
+.my-rounded-button {
+  border-radius: 50px !important;
+  padding: 10px 25px !important;
+  font-family: 'Prompt', sans-serif;
+}
+.my-rounded-popup {
+  font-family: 'Prompt', sans-serif;
+}
+/* ปรับแต่ง Checkbox card-muted เพิ่มเติมตามที่ขอไว้ก่อนหน้า */
+.card-muted {
+  pointer-events: none; /* ห้ามกดที่ตัว TD */
+  opacity: 0.5;
+}
+/* ดัน SweetAlert ให้มาอยู่หน้า Modal */
+.swal2-container {
+    z-index: 2000 !important;
+}
 
+/* ปรับความโค้งมนของช่องพิมพ์ให้เข้ากับธีม */
+.swal2-textarea {
+    border-radius: 15px !important;
+    font-family: 'Prompt', sans-serif !important;
+}
+</style>
+
+<script>
+document.querySelectorAll('.check-all').forEach(checkbox => {
+  checkbox.addEventListener('change', function() {
+    const targetClass = this.getAttribute('data-target');
+    const targetCheckboxes = document.querySelectorAll(`.${targetClass}`);
+    targetCheckboxes.forEach(cb => {
+      // ติ๊กเฉพาะตัวที่ไม่ได้โดน Disable หรืออยู่ใน card-muted (ถ้าต้องการ)
+      cb.checked = this.checked;
+    });
+  });
+});
+// ล็อกทุก Checkbox ที่มีคลาส card-muted
+document.querySelectorAll("input.card-muted").forEach(cb => {
+    cb.disabled = true;
+});
+document.getElementById('btnReject').addEventListener('click', function() {
+  // แก้ปัญหาพิมพ์ไม่ได้ใน Modal
+  const modalEl = document.getElementById('checklistModal');
+  
+  Swal.fire({
+    title: 'ระบุหมายเหตุการปฏิเสธ',
+    input: 'textarea',
+    inputPlaceholder: 'พิมพ์เหตุผลที่ปฏิเสธการรับสินค้าที่นี่...',
+    showCancelButton: true,
+    confirmButtonText: 'ยืนยันปฏิเสธ',
+    cancelButtonText: 'ยกเลิก',
+    confirmButtonColor: '#ff7a1a',
+    cancelButtonColor: '#64748b',
+    borderRadius: '25px',
+    focusConfirm: false, // เพิ่มบรรทัดนี้
+    customClass: {
+      popup: 'my-rounded-popup',
+      confirmButton: 'my-rounded-button',
+      cancelButton: 'my-rounded-button'
+    },
+    didOpen: () => {
+        // บังคับให้ Focus ไปที่ช่อง Textarea ทันทีที่เปิด
+        const input = Swal.getInput();
+        if (input) {
+            input.focus();
+        }
+    },
+    preConfirm: (value) => {
+      if (!value) {
+        Swal.showValidationMessage('กรุณากรอกหมายเหตุก่อนกดยืนยัน')
+      }
+      return value
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log("เหตุผลการปฏิเสธ:", result.value);
+      
+      Swal.fire({
+        title: 'บันทึกสำเร็จ!',
+        text: 'ส่งข้อมูลการปฏิเสธเรียบร้อยแล้ว',
+        icon: 'success',
+        confirmButtonColor: '#ff7a1a',
+        borderRadius: '25px'
+      }).then(() => {
+        const truckModal = bootstrap.Modal.getInstance(modalEl);
+        truckModal.hide();
+      });
+    }
+  });
+});
+</script>      
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
