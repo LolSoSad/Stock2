@@ -267,25 +267,21 @@ h3{
   <div class="card-body">
     <div class="row g-3 align-items-end">
 
-      <div class="col-md-2 col-12">
-        <label class="form-label fw-semibold">วันที่เริ่มต้นสัญญา / วันเริ่มรอบบิล</label>
-        <input type="date" class="form-control" id="startDate">
-      </div>
+     <div class="col-md-2 col-12">
+  <label class="form-label fw-semibold">รหัสรถ</label>
+  <input type="text" class="form-control" id="filterTruck" placeholder="เช่น LPE">
+</div>
 
-      <div class="col-md-2 col-12">
-        <label class="form-label fw-semibold">วันสิ้นสุดสัญญา</label>
-        <input type="date" class="form-control" id="endDate">
-      </div>
+<div class="col-md-2 col-12">
+  <label class="form-label fw-semibold">Model</label>
+  <input type="text" class="form-control" id="filterModel" placeholder="เช่น 967654">
+</div>
 
-      <div class="col-md-2 col-12">
-        <label class="form-label fw-semibold">เลขที่สัญญา</label>
-        <select class="form-select" id="contractNo">
-          <option value="">ทั้งหมด</option>
-          <option value="C001">C001</option>
-          <option value="C002">C002</option>
-          <option value="C003">C003</option>
-        </select>
-      </div>
+<div class="col-md-2 col-12">
+  <label class="form-label fw-semibold">ประเภท</label>
+  <input type="text" class="form-control" id="filterType" placeholder="เช่น Powered">
+</div>
+
 <div class="col-md-2 col-12 d-flex gap-2">
     <button class="btn btn-search w-60" onclick="filterTable()">
         🔍 ค้นหา
@@ -561,23 +557,6 @@ if (searchInput) {
     });
   });
 }
-function filterTable() {
-  const startDate = document.getElementById("startDate").value;
-  const endDate = document.getElementById("endDate").value;
-  const contractNo = document.getElementById("contractNo").value;
-
-  console.log("Start:", startDate);
-  console.log("End:", endDate);
-  console.log("Contract:", contractNo);
-
-  Swal.fire({
-    icon: 'info',
-    title: 'กำลังค้นหา...',
-    text: 'ระบบกำลังกรองข้อมูลตามเงื่อนไข',
-    timer: 1500,
-    showConfirmButton: false
-  });
-}
 
 // 🔔 Alert ตอนกดบันทึก
 document.getElementById("saveBtn").addEventListener("click", function () {
@@ -605,7 +584,40 @@ function resetFilter() {
     });
 }
 </script>
-     
+<script>
+function filterTable() {
+  const truck = document.getElementById("filterTruck").value.toLowerCase();
+  const model = document.getElementById("filterModel").value.toLowerCase();
+  const type = document.getElementById("filterType").value.toLowerCase();
+
+  const rows = document.querySelectorAll("table.table tbody tr");
+
+  rows.forEach(row => {
+    const truckCode = row.cells[0].innerText.toLowerCase(); // รหัสรถ
+    const modelText = row.cells[1].innerText.toLowerCase(); // Model
+    const typeText = row.cells[2].innerText.toLowerCase();  // ประเภท
+
+    let show = true;
+
+    if (truck !== "" && !truckCode.includes(truck)) show = false;
+    if (model !== "" && !modelText.includes(model)) show = false;
+    if (type !== "" && !typeText.includes(type)) show = false;
+
+    row.style.display = show ? "" : "none";
+  });
+}
+
+function resetFilter() {
+  document.getElementById("filterTruck").value = "";
+  document.getElementById("filterModel").value = "";
+  document.getElementById("filterType").value = "";
+
+  const rows = document.querySelectorAll("table.table tbody tr");
+  rows.forEach(row => row.style.display = "");
+}
+</script>
+
+   
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
