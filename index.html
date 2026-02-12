@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>ตารางนำเข้าสินค้า</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; font-family: "Prompt", sans-serif; }
+    h3 { font-weight: 600; color: #333; }
+    .table thead th { background-color: #f1f3f5; color: #555; }
+    .badge-status { min-width: 70px; font-size: 0.8rem; }
+    .modal-header { border-bottom: none; background-color: #f8f9fa; }
+    .modal-footer { border-top: none; background-color: #f8f9fa; }
+    .detail-box { background: #fff; border-radius: 10px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .detail-label { font-weight: 600; color: #555; }
+    .detail-value { color: #333; }
+    .modal-checklist th, .modal-checklist td { text-align: center; vertical-align: middle; }
+    .modal-checklist th { background-color: #f1f3f5; }
+    .btn-outline-primary { border-radius: 20px; }
+/* ===============================
+   ORANGE - BLUE - WHITE THEME
+================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+
+body{
+  font-family: "Prompt", sans-serif;
+}
+
+/* ===== Title ===== */
+h3{
+  font-weight:700;
+  font-size:1.4rem;
+  color:#0f172a;
+  border-left:6px solid #ff7a1a;
+  padding-left:14px;
+}
+
+/* ===== Card ===== */
+.card{
+  border:none;
+  border-radius:24px;
+  background:#ffffff;
+  box-shadow:0 20px 40px rgba(37,99,235,0.08);
+}
+
+/* ===== Table ===== */
+.table thead th{
+  background: linear-gradient(
+      to bottom,
+      #e0f2ff 0%,   /* ฟ้าด้านบน */
+      #f0f9ff 100% /* ฟ้าอ่อนด้านล่าง */
+  );
+  color:#0284c7;
+  font-weight:600;
+  border:none;
+  padding:18px;
+  font-size:0.8rem;
+  letter-spacing:.5px;
+}
+
+
+.table tbody tr{
+  transition:.3s;
+}
+
+.table tbody tr:hover{
+  background:#f8fbff;
+  transform:scale(1.002);
+}
+
+.table td{
+  padding:18px;
+  vertical-align:middle;
+  border-bottom:1px solid #eef2f7;
+}
+
+/* ===== Badge ===== */
+.badge-status{
+  padding:8px 16px;
+  border-radius:10px;
+  font-weight:500;
+  font-size:.75rem;
+  letter-spacing:.3px;
+}
+
+.bg-success{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.bg-warning{
+  background:#fff4e6 !important;
+  color:#ea580c !important;
+}
+
+.bg-danger{
+  background:#fee2e2 !important;
+  color:#b91c1c !important;
+}
+
+/* ===== Detail Button ===== */
+.btn-outline-primary{
+  border-radius:10px;
+  border:2px solid #38bdf8;
+  color:#0284c7;
+  font-weight:500;
+  padding:6px 16px;
+  transition:.3s;
+}
+
+.btn-outline-primary:hover{
+  background:#38bdf8;
+  color:#fff;
+  box-shadow:0 8px 20px rgba(56,189,248,0.4);
+  transform:translateY(-2px);
+}
+
+/* ===== Modal ===== */
+.modal-content{
+  border-radius:20px;
+  border:none;
+  box-shadow:0 30px 60px rgba(0,0,0,0.15);
+  overflow:hidden;
+}
+
+/* ===== Detail Box ===== */
+.detail-box{
+  background:linear-gradient(135deg,#ffffff,#f0f9ff);
+  border-radius:20px;
+  padding:25px;
+  border:1px solid #e0f2fe;
+}
+
+.detail-label{
+  font-size:.8rem;
+  color:#64748b;
+}
+
+.detail-value{
+  font-weight:600;
+  font-size:1rem;
+  color:#ff7a1a;
+}
+
+/* ===== Checklist Table ===== */
+.modal-checklist{
+  border-radius:20px;
+  overflow:hidden;
+  border:1px solid #e2e8f0;
+}
+
+.modal-checklist th{
+  background:#e0f2ff;
+  color:#0284c7;
+  font-weight:600;
+}
+
+.modal-checklist td{
+  background:#ffffff;
+}
+
+/* ===== Checkbox ===== */
+.modal-checklist input[type="checkbox"]{
+  width:22px;
+  height:22px;
+  cursor:pointer;
+}
+
+/* ===== Buttons ===== */
+.btn-success{
+  background:linear-gradient(135deg,#ff8a3d,#ff6b00);
+  border:none;
+  border-radius:20px;
+  padding:12px 32px;
+  font-weight:600;
+  box-shadow:0 8px 25px rgba(255,107,0,0.4);
+  transition:.3s;
+}
+
+.btn-success:hover{
+  transform:scale(1.05);
+  box-shadow:0 12px 30px rgba(255,107,0,0.5);
+}
+
+.btn-secondary{
+  border-radius:20px;
+  padding:12px 25px;
+  background:#e2e8f0;
+  color:#475569;
+  border:none;
+}
+
+  </style>
+</head>
+<body>
+<div class="container py-4">
+  <h3 class="mb-4">📦 รายการนำเข้าสินค้า</h3>
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th class="text-nowrap" style="border-radius: 20px 0 0 0;">รหัสรถ</th>
+            <th>Model</th>
+            <th>ประเภท</th>
+            <th>Admin</th>
+            <th>WH</th>
+            <th>PDI Assy</th>
+            <th>PDI QC</th>
+            <th style="border-radius: 0 20px 0 0;"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LPE</td>
+            <td>967654</td>
+            <td>Powered Pallet Trucks</td>
+            <td><span class="badge bg-success badge-status">ผ่าน</span></td>
+            <td><span class="badge bg-warning text-dark badge-status">รอตรวจ</span></td>
+            <td><span class="badge bg-danger badge-status">ยังไม่ตรวจ</span></td>
+            <td><span class="badge bg-danger badge-status">ยังไม่ตรวจ</span></td>
+            <td>
+              <button class="btn btn-outline-primary btn-sm text-nowrap" data-bs-toggle="modal" data-bs-target="#checklistModal">ดูรายละเอียด</button>
+            </td>
+          </tr>
+          <tr>
+            <td>LHE</td>
+            <td>LHE150</td>
+            <td>Powered Pallet Trucks</td>
+            <td><span class="badge bg-success badge-status">ผ่าน</span></td>
+            <td><span class="badge bg-success badge-status">ผ่าน</span></td>
+            <td><span class="badge bg-warning text-dark badge-status">รอตรวจ</span></td>
+            <td><span class="badge bg-danger badge-status">ยังไม่ตรวจ</span></td>
+            <td>
+              <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#checklistModal">ดูรายละเอียด</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="checklistModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">รายละเอียดการตรวจรับสินค้า</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-box mb-4">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <div class="detail-label">รหัสรถ</div>
+              <div class="detail-value">LPE</div>
+            </div>
+            <div class="col-md-3">
+              <div class="detail-label">Model</div>
+              <div class="detail-value">967654</div>
+            </div>
+            <div class="col-md-3">
+              <div class="detail-label">ประเภท</div>
+              <div class="detail-value">Powered Pallet Trucks</div>
+            </div>
+            <div class="col-md-3">
+              <div class="detail-label">สถานะรวม</div>
+              <div class="detail-value"><span class="badge bg-warning text-dark">รอตรวจ</span></div>
+            </div>
+          </div>
+        </div>
+
+        <table class="table table-bordered modal-checklist">
+          <thead>
+            <tr>
+              <th>รายการตรวจ</th>
+              <th>Admin</th>
+              <th>WH</th>
+              <th>PDI Assy</th>
+              <th>PDI QC</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>รถยก</td>
+              <td><input type="checkbox" checked></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+            </tr>
+            <tr>
+              <td>กล่องควบคุม</td>
+              <td><input type="checkbox" checked></td>
+              <td><input type="checkbox" checked></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+            </tr>
+            <tr>
+              <td>เครื่องชาร์จ</td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+            </tr>
+            <tr>
+              <td>แบตเตอรี่</td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+              <td><input type="checkbox"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+        <button class="btn btn-success">บันทึก</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
